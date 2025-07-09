@@ -1,103 +1,174 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import Header from '@/components/Header';
+import GroupCard from '@/components/GroupCard';
+import ProductCard from '@/components/ProductCard';
+import SocialFeed from '@/components/SocialFeed';
+import AIChat from '@/components/AIChat';
+import CartSidebar from '@/components/CartSidebar';
+import { ShoppingCart } from 'lucide-react';
+
+const groups = [
+  {
+    name: "Goa Trip Squad",
+    members: ["Manya", "Pari", "Nis", "You"],
+    sharedItems: 12,
+    wishlistItems: 8,
+    image: "/group1.jpg"
+  },
+  {
+    name: "College Friends",
+    members: ["Alex", "Sarah", "Mike", "Emma", "You"],
+    sharedItems: 6,
+    wishlistItems: 15,
+    image: "/group2.jpg"
+  },
+  {
+    name: "Family Shopping",
+    members: ["Mom", "Dad", "Sister", "You"],
+    sharedItems: 20,
+    wishlistItems: 5,
+    image: "/group3.jpg"
+  }
+];
+
+const products = [
+  {
+    id: '1',
+    name: 'Wireless Bluetooth Headphones with Noise Cancellation',
+    price: 79.99,
+    originalPrice: 99.99,
+    image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=400',
+    rating: 4.5,
+    reviews: 1234,
+    authorityScore: 92,
+    suggestedBy: 'Manya',
+    liked: true
+  },
+  {
+    id: '2',
+    name: 'Waterproof Sunscreen SPF 50+ for Sensitive Skin',
+    price: 12.99,
+    image: 'https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg?auto=compress&cs=tinysrgb&w=400',
+    rating: 4.8,
+    reviews: 856,
+    authorityScore: 88
+  },
+  {
+    id: '3',
+    name: 'Lightweight Travel Backpack with Multiple Compartments',
+    price: 45.99,
+    originalPrice: 65.99,
+    image: 'https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=400',
+    rating: 4.3,
+    reviews: 567,
+    authorityScore: 85,
+    suggestedBy: 'Nis'
+  },
+  {
+    id: '4',
+    name: 'Portable Phone Charger 20000mAh Power Bank',
+    price: 29.99,
+    image: 'https://images.pexels.com/photos/4526943/pexels-photo-4526943.jpeg?auto=compress&cs=tinysrgb&w=400',
+    rating: 4.6,
+    reviews: 2341,
+    authorityScore: 90,
+    inWishlist: true
+  }
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [cartOpen, setCartOpen] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Hero Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-700 rounded-2xl text-white p-8 mb-8">
+          <h1 className="text-4xl font-bold mb-4">Shop Together, Save Together</h1>
+          <p className="text-xl mb-6">Connect with friends, share wishlists, and discover products together on Walmart Social</p>
+          <div className="flex space-x-4">
+            <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+              Create Group
+            </button>
+            <button className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+              Explore Products
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Groups */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-xl shadow-md p-6 mb-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Your Groups</h2>
+              <div className="space-y-4">
+                {groups.map((group, index) => (
+                  <GroupCard key={index} {...group} />
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="bg-white rounded-xl shadow-md p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Total Groups</span>
+                  <span className="font-semibold">3</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Shared Items</span>
+                  <span className="font-semibold">38</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Wishlist Items</span>
+                  <span className="font-semibold">28</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Friends Online</span>
+                  <span className="font-semibold text-green-600">12</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Middle Column - Products */}
+          <div className="lg:col-span-1">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Recommended for You</h2>
+              <div className="grid gap-6">
+                {products.map((product) => (
+                  <ProductCard key={product.id} {...product} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Social Feed */}
+          <div className="lg:col-span-1">
+            <SocialFeed />
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      {/* Floating Cart Button */}
+      <button
+        onClick={() => setCartOpen(true)}
+        className="fixed bottom-6 left-6 bg-orange-500 text-white p-4 rounded-full shadow-lg hover:bg-orange-600 transition-colors z-40"
+      >
+        <ShoppingCart className="w-6 h-6" />
+        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
+          4
+        </span>
+      </button>
+
+      {/* Components */}
+      <AIChat />
+      <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </div>
   );
 }
